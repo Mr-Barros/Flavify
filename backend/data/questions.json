@@ -1,0 +1,17 @@
+[
+    {
+        "question_id": "c1a7a1c8-5f2c-4e8c-9d32-9d82a0f4a1ab",
+        "statement": "What is the capital of France?",
+        "correct_answer": "Paris is the capital of France."
+    },
+    {
+        "question_id": "7e4bb9c6-3bfa-4d5a-8ce1-dcf4d0330c12",
+        "statement": "Explain what machine learning is.",
+        "correct_answer": "Machine learning is a field of artificial intelligence that enables systems to learn from data."
+    },
+    {
+        "question_id": "fcb245e7-e819-4bb3-a7ca-65426bbfcd81",
+        "statement": "State Newton's second law of motion.",
+        "correct_answer": "Newton's second law states that force equals mass times acceleration."
+    }
+]
