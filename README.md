@@ -26,3 +26,9 @@ No segundo terminal, rode os comandos a seguir:
 cd frontend
 npm run dev
 ```
+
+rodar todos os 49 testes:
+
+```shell
+python -m unittest discover tests -v -b
+```
