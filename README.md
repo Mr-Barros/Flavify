@@ -7,6 +7,7 @@ Rode os seguintes comandos no terminal (é recomendado utilizar uma venv)
 ```shell
 pip install fastapi uvicorn
 pip install sentence_transformers
+npm install
 ```
 
 ### Como rodar
