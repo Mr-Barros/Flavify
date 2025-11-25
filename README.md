@@ -2,34 +2,42 @@
 
 ### Dependências
 
-Rode os seguintes comandos no terminal (é recomendado utilizar uma venv)
+Rode os seguintes comandos no terminal para instalar todas as bibliotecas necessárias (Backend e Frontend).
+
+**Backend:**
+```shell
+pip install fastapi uvicorn sentence_transformers httpx
+```
+
+Frontend:
 
 ```shell
-pip install fastapi uvicorn
-pip install sentence_transformers
+cd frontend
 npm install
 ```
-
-### Como rodar
-
+Como rodar
 Para inicializar os servidores de frontend e backend, crie uma instância de terminal para o backend e outra para o frontend, ambas na pasta raiz do projeto.
 
-No primeiro terminal, rode os comandos a seguir:
+No primeiro terminal (Backend), rode os comandos a seguir:
 
 ```shell
-cd backend
-python3 app.py
-```
 
-No segundo terminal, rode os comandos a seguir:
+cd backend
+python app.py
+```
+(Se estiver no Linux/Mac, use python3 app.py)
+
+No segundo terminal (Frontend), rode os comandos a seguir:
 
 ```shell
 cd frontend
 npm run dev
 ```
 
-rodar todos os 49 testes:
+Testes Automatizados
+Para rodar a bateria completa de testes (49 testes cobrindo rotas, lógica, IA e validações):
 
 ```shell
+cd backend
 python -m unittest discover tests -v -b
 ```

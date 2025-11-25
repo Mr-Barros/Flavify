@@ -1,6 +1,6 @@
-// Questions.tsx
-
 import { useEffect, useState } from "react";
+import { QuestionCard } from "./QuestionCard"; // <--- Agora esse import vai funcionar
+import { Ghost } from 'lucide-react';
 
 type Question = {
     question_id: string;
@@ -13,120 +13,61 @@ type QuestionsResponse = {
 
 export default function Questions() {
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [answers, setAnswers] = useState<Record<string, string>>({});
-    const [scores, setScores] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(true);
 
-    // Load questions from backend
     useEffect(() => {
         async function loadQuestions() {
             try {
                 const response = await fetch("http://127.0.0.1:5000/questions");
                 const data: QuestionsResponse = await response.json();
-
-                const questionList = Object.values(data);
-                setQuestions(questionList);
-
-                // Initialize empty answers
-                const initialAnswers: Record<string, string> = {};
-                questionList.forEach((q) => {
-                    initialAnswers[q.question_id] = "";
-                });
-                setAnswers(initialAnswers);
+                // O backend retorna um dicionário, transformamos em array aqui
+                setQuestions(Object.values(data));
             } catch (err) {
                 console.error("Failed to load questions:", err);
             } finally {
                 setLoading(false);
             }
         }
-
         loadQuestions();
     }, []);
 
-    // Handle textfield input
-    function handleAnswerChange(id: string, value: string) {
-        setAnswers((prev) => ({ ...prev, [id]: value }));
-    }
-
-    // Submit answer to backend
-    async function submitAnswer(id: string) {
-        const userAnswer = answers[id];
-
-        try {
-            const response = await fetch(`http://127.0.0.1:5000/questions/evaluate/${id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ answer: userAnswer }),
-            });
-
-            const data = await response.json();
-            setScores((prev) => ({ ...prev, [id]: data.score }));
-        } catch (err) {
-            console.error("Evaluation error:", err);
-        }
-    }
-
     if (loading) {
-        return <p>Carregando questões...</p>;
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+                <div className="w-10 h-10 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
+                <p className="text-gray-400 animate-pulse">Carregando desafios...</p>
+            </div>
+        );
     }
 
     return (
-        <div style={{ padding: "30px", fontFamily: "Arial" }}>
-        <h1>Flavify</h1>
-
-        {questions.length === 0 && <p>Nenhuma questão encontrada.</p>}
-
-        {questions.map((question) => (
-            <div
-                key={question.question_id}
-                style={{
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    padding: "20px",
-                    marginBottom: "20px",
-                }}
-            >
-            <p style={{ fontWeight: "bold" }}>{question.statement}</p>
-
-            <input
-                type="text"
-                placeholder="Your answer..."
-                value={answers[question.question_id]}
-                onChange={(e) => handleAnswerChange(question.question_id, e.target.value)}
-                style={{
-                    width: "100%",
-                    padding: "8px",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #999",
-                }}
-            />
-
-            <button
-                onClick={() => submitAnswer(question.question_id)}
-                style={{
-                    padding: "8px 16px",
-                    border: "none",
-                    borderRadius: "4px",
-                    backgroundColor: "#007bff",
-                    color: "white",
-                    cursor: "pointer",
-                }}
-            >
-                Enviar
-            </button>
-
-            {scores[question.question_id] !== undefined && (
-                <p style={{ marginTop: "10px" }}>
-                    Score: <strong>{scores[question.question_id]}</strong>
+        <div className="pt-24 pb-12 max-w-6xl mx-auto px-4">
+            <div className="mb-12 text-center">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
+                    Desafie seu <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Conhecimento</span>
+                </h1>
+                <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Responda às questões abaixo e através de NLP, iremos analisar sua precisão semântica instantaneamente.
                 </p>
-            )}
             </div>
-        ))}
 
+            {questions.length === 0 ? (
+                <div className="text-center py-20 bg-gray-900/50 rounded-2xl border border-gray-800 border-dashed">
+                    <Ghost size={48} className="mx-auto text-gray-600 mb-4" />
+                    <p className="text-gray-400 text-lg">Nenhuma questão encontrada.</p>
+                    <p className="text-gray-600 text-sm mt-2">Acesse o painel de administrador para criar algumas.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {questions.map((question) => (
+                        <QuestionCard 
+                            key={question.question_id}
+                            id={question.question_id}
+                            statement={question.statement}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
