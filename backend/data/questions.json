@@ -13,5 +13,35 @@
         "question_id": "fcb245e7-e819-4bb3-a7ca-65426bbfcd81",
         "statement": "State Newton's second law of motion.",
         "correct_answer": "Newton's second law states that force equals mass times acceleration."
+    },
+    {
+        "question_id": "68046568-0e7b-4014-8cae-c7b18f377b25",
+        "statement": "Qual a principal diferença entre um projeto ágil e tradicional?",
+        "correct_answer": "A principal diferença entre os projetos é o tipo de escopo variável e fixo,\nrespectivamente."
+    },
+    {
+        "question_id": "ed4af8f5-419d-458c-953b-221dc8839746",
+        "statement": "Se um projeto ágil não possui fim definido, então seu prazo é variável assim como o escopo. CERTO/ERRADO/DEPENDE. Justifique.",
+        "correct_answer": "Errado. O projeto ágil não possui um fim, porém possui um prazo fixo de sprints,\nsendo o escopo variável dependendo das entregas planejadas.\n"
+    },
+    {
+        "question_id": "162a6d61-ba68-4bc2-8918-70102f213817",
+        "statement": "Explique por que a modularização facilita o desenvolvimento de manutenções evolutivas",
+        "correct_answer": "Como o programa está dividido em módulos menores e relacionados, é mais fácil de\nadaptar a correção do erro mexendo apenas naquele pequeno módulo"
+    },
+    {
+        "question_id": "3dfe9dfc-a2f4-47ea-82f4-c920afa8123f",
+        "statement": "Explique em quais momentos são percebidas as qualidades de artefatos",
+        "correct_answer": "Durante a etapa de desenvolvimento, que engloba a implementação e a execução\nde testes integrados.\n"
+    },
+    {
+        "question_id": "dd9136e8-5db6-4b00-b22b-88cdaad2a697",
+        "statement": "Explique a necessidade de se classificar requisitos pelo escopo de efeito",
+        "correct_answer": "Classificar os requisitos pelo escopo de efeito permite entender quais requisitos\nimpactam maior parte do sistema e quais têm impacto localizado.\n"
+    },
+    {
+        "question_id": "b68f4c46-f4a1-42f0-a949-ccebd415f00b",
+        "statement": "O requisito \"Cada página de relatório de funcionários não precisa ter mais que 40 linhas.\" é inverso. CERTO/ERRADO/DEPENDE. Justifique.",
+        "correct_answer": "Depende. Se o requisito foi aprovado pelo cliente durante a etapa de validação,\nentão ele é considerado um requisito funcional. Se foi criado apenas pela equipe\ntécnica para evitar ambiguidade, sem validação do cliente, então é um requisito\ninverso. Portanto, sua classificação depende da origem e validação da exigência."
     }
 ]
