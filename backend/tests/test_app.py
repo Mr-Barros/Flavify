@@ -1,6 +1,9 @@
+#test_app.py
+
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 from fastapi.testclient import TestClient
+from typing import Any
 import sys
 import os
 
@@ -148,14 +151,14 @@ class TestApp(unittest.TestCase):
     # ==========================================
 
     @patch('app.evaluate')
-    def test_evaluate_success(self, mock_evaluate):
+    def test_evaluate_success(self, mock_evaluate: Mock):
         """Avaliação normal."""
         mock_evaluate.return_value = 100
         response = client.post("/questions/evaluate/qualquer_id", json={"answer": "resp"})
         self.assertEqual(response.json(), {'score': 100})
 
     @patch('app.evaluate')
-    def test_evaluate_empty_answer(self, mock_evaluate):
+    def test_evaluate_empty_answer(self, mock_evaluate: Mock):
         """Avaliação enviando resposta vazia ou json vazio."""
         mock_evaluate.return_value = 0
         
@@ -167,7 +170,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.json(), {'score': 0})
 
     @patch('app.evaluate')
-    def test_evaluate_id_not_found(self, mock_evaluate):
+    def test_evaluate_id_not_found(self, mock_evaluate: Mock):
         """Avaliação em ID inexistente."""
         mock_evaluate.return_value = -1
         response = client.post("/questions/evaluate/id_falso", json={"answer": "resp"})
@@ -183,7 +186,7 @@ class TestApp(unittest.TestCase):
         O FastAPI (Pydantic) deve bloquear com 422 Unprocessable Entity,
         pois sua API espera dict[str, str] e uma lista não pode ser convertida para string simples.
         """
-        payload = {"statement": ["isso", "é", "uma", "lista"], "correct_answer": "Ok"}
+        payload: dict[str, Any] = {"statement": ["isso", "é", "uma", "lista"], "correct_answer": "Ok"}
         response = client.post("/questions", json=payload)
         self.assertEqual(response.status_code, 422)
 

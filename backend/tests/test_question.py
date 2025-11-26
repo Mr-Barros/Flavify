@@ -1,5 +1,7 @@
+#test_question.py
+
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, Mock
 import sys
 import os
 import json
@@ -72,14 +74,14 @@ class TestQuestion(unittest.TestCase):
     # 3. TESTES DE AVALIAÇÃO (EVALUATE)
 
     @patch('question.sentence_similarity')
-    def test_evaluate_not_found(self, mock_similarity):
+    def test_evaluate_not_found(self, mock_similarity: Mock):
         """Avaliar ID inexistente."""
         result = question.evaluate("id_inexistente", "Resposta")
         self.assertEqual(result, -1)
         mock_similarity.assert_not_called()
 
     @patch('question.sentence_similarity')
-    def test_evaluate_scores(self, mock_similarity):
+    def test_evaluate_scores(self, mock_similarity: Mock):
         """Testa todas as faixas de pontuação (0, 40, 70, 100)."""
         question.create_question("Q", "A")
         q_id = list(question.questions.keys())[0]
@@ -97,7 +99,7 @@ class TestQuestion(unittest.TestCase):
             self.assertEqual(score, expected_score, f"Falha para similaridade {sim_value}")
 
     @patch('question.sentence_similarity')
-    def test_evaluate_empty_answer(self, mock_similarity):
+    def test_evaluate_empty_answer(self, mock_similarity: Mock):
         """Avaliar resposta vazia."""
         mock_similarity.return_value = 0.0
         question.create_question("Q", "A")
@@ -148,7 +150,7 @@ class TestQuestion(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('json.dump')
-    def test_save_questions(self, mock_json_dump, mock_file):
+    def test_save_questions(self, mock_json_dump: Mock, mock_file: Mock):
         """Salvar no arquivo JSON."""
         question.create_question("Q", "A")
         question.save_questions_to_json()
@@ -156,13 +158,13 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(mock_json_dump.called)
 
     @patch('builtins.open', new_callable=mock_open, read_data='[{"question_id": "1", "statement": "A", "correct_answer": "B"}]')
-    def test_load_questions_success(self, mock_file):
+    def test_load_questions_success(self, mock_file: Mock):
         """Carregar do arquivo JSON."""
         question.load_questions_from_json()
         self.assertIn("1", question.questions)
 
     @patch('builtins.open', side_effect=FileNotFoundError)
-    def test_load_questions_file_not_found(self, mock_file):
+    def test_load_questions_file_not_found(self, mock_file: Mock):
         """Carregar sem arquivo (não deve quebrar)."""
         try:
             question.load_questions_from_json()
@@ -170,7 +172,7 @@ class TestQuestion(unittest.TestCase):
             self.fail("Deveria tratar FileNotFoundError silenciosamente")
 
     @patch('builtins.open', new_callable=mock_open, read_data='INVALID JSON')
-    def test_load_questions_corrupted_json(self, mock_file):
+    def test_load_questions_corrupted_json(self, mock_file: Mock):
         """Carregar arquivo JSON corrompido (Deve gerar JSONDecodeError)."""
         # Seu código NÃO tem try/except para JSONDecodeError. 
         # O teste correto é verificar se o erro SOBE para quem chamou.

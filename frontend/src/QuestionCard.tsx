@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Send, CheckCircle2, AlertCircle, XCircle, MinusCircle } from 'lucide-react';
+import { Send, CheckCircle2, XCircle, MinusCircle, RotateCcw } from 'lucide-react';
 
 interface QuestionProps {
     id: string;
@@ -33,9 +33,9 @@ export function QuestionCard({ id, statement }: QuestionProps) {
     // Define cor e ícone baseados na nota
     const getFeedback = (s: number) => {
         if (s === 100) return { color: 'text-green-400 bg-green-500/10 border-green-500/20', icon: <CheckCircle2 />, text: 'Perfeito!' };
-        if (s >= 70) return { color: 'text-blue-400 bg-blue-500/10 border-blue-500/20', icon: <CheckCircle2 />, text: 'Muito bom!' };
-        if (s >= 40) return { color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20', icon: <MinusCircle />, text: 'Na média' };
-        return { color: 'text-red-400 bg-red-500/10 border-red-500/20', icon: <XCircle />, text: 'Precisa melhorar' };
+        if (s >= 70) return { color: 'text-blue-400 bg-blue-500/10 border-blue-500/20', icon: <CheckCircle2 />, text: 'Quase lá!' };
+        if (s >= 40) return { color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20', icon: <MinusCircle />, text: 'Precisa melhorar...' };
+        return { color: 'text-red-400 bg-red-500/10 border-red-500/20', icon: <XCircle />, text: 'Ops, tente novamente!' };
     };
 
     const feedback = score !== null ? getFeedback(score) : null;
@@ -68,13 +68,25 @@ export function QuestionCard({ id, statement }: QuestionProps) {
                         )}
                     </button>
                 ) : (
-                    <div className={`mt-4 p-3 rounded-lg border flex items-center gap-3 ${feedback?.color} animate-in fade-in slide-in-from-top-2`}>
-                        {feedback?.icon}
-                        <div className="flex flex-col">
-                            <span className="font-bold text-lg leading-none">{score}</span>
-                            <span className="text-xs opacity-80 uppercase tracking-wider">{feedback?.text}</span>
+                    <>
+                        <div className={`mt-4 p-3 rounded-lg border flex items-center gap-3 ${feedback?.color} animate-in fade-in slide-in-from-top-2`}>
+                            {feedback?.icon}
+                            <div className="flex flex-col">
+                                <span className="font-bold text-lg leading-none">{score}</span>
+                                <span className="text-xs opacity-80 uppercase tracking-wider">{feedback?.text}</span>
+                            </div>
                         </div>
-                    </div>
+
+                        <button
+                            onClick={() => {
+                                setScore(null);
+                                setAnswer('');
+                            }}
+                            className="absolute bottom-3 right-3 bg-purple-600 hover:bg-purple-500 text-white p-2 rounded-lg transition-all shadow-lg active:scale-95"
+                        >
+                            <RotateCcw size={18} />
+                        </button>
+                    </>
                 )}
             </div>
         </div>

@@ -1,5 +1,7 @@
+# test_natural_language.py
+
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, Mock
 import sys
 import os
 
@@ -16,7 +18,7 @@ class TestSentenceSimilarity(unittest.TestCase):
 
     @patch('natural_language.util.cos_sim')
     @patch('natural_language.SentenceTransformer')
-    def test_similarity_high(self, mock_transformer_class, mock_cos_sim):
+    def test_similarity_high(self, mock_transformer_class: Mock, mock_cos_sim: Mock):
         """Testa similaridade alta (0.95)."""
         mock_model_instance = mock_transformer_class.return_value
         mock_model_instance.encode.return_value = MagicMock()
@@ -29,7 +31,7 @@ class TestSentenceSimilarity(unittest.TestCase):
 
     @patch('natural_language.util.cos_sim')
     @patch('natural_language.SentenceTransformer')
-    def test_similarity_low(self, mock_transformer_class, mock_cos_sim):
+    def test_similarity_low(self, mock_transformer_class: Mock, mock_cos_sim: Mock):
         """Testa similaridade baixa (0.10)."""
         mock_model_instance = mock_transformer_class.return_value
         mock_model_instance.encode.return_value = MagicMock()
@@ -45,9 +47,9 @@ class TestSentenceSimilarity(unittest.TestCase):
 
     @patch('natural_language.util.cos_sim')
     @patch('natural_language.SentenceTransformer')
-    def test_similarity_negative_handling(self, mock_transformer_class, mock_cos_sim):
+    def test_similarity_negative_handling(self, mock_transformer_class: Mock, mock_cos_sim: Mock):
         """Testa proteção contra similaridade negativa (Math)."""
-        mock_model_instance = mock_transformer_class.return_value
+        # mock_model_instance = mock_transformer_class.return_value
         # Simula similaridade de -0.5
         mock_cos_sim.return_value.item.return_value = -0.5
 
@@ -58,7 +60,7 @@ class TestSentenceSimilarity(unittest.TestCase):
 
     @patch('natural_language.util.cos_sim')
     @patch('natural_language.SentenceTransformer')
-    def test_empty_strings(self, mock_transformer_class, mock_cos_sim):
+    def test_empty_strings(self, mock_transformer_class: Mock, mock_cos_sim: Mock):
         """Testa input de strings vazias."""
         mock_cos_sim.return_value.item.return_value = 0.0
         result = natural_language.sentence_similarity("", "")
@@ -69,7 +71,7 @@ class TestSentenceSimilarity(unittest.TestCase):
     # ==========================================
 
     @patch('natural_language.SentenceTransformer')
-    def test_model_load_failure(self, mock_transformer_class):
+    def test_model_load_failure(self, mock_transformer_class: Mock):
         """Testa falha ao carregar o modelo de IA (Ex: Sem internet)."""
         # Simulamos que ao tentar iniciar a classe, ocorre um erro de Runtime
         mock_transformer_class.side_effect = RuntimeError("Falha ao baixar modelo")
@@ -80,7 +82,7 @@ class TestSentenceSimilarity(unittest.TestCase):
             natural_language.sentence_similarity("A", "B")
 
     @patch('natural_language.SentenceTransformer')
-    def test_encode_failure(self, mock_transformer_class):
+    def test_encode_failure(self, mock_transformer_class: Mock):
         """Testa falha durante o processamento do texto (Encode)."""
         mock_instance = mock_transformer_class.return_value
         # Simulamos que o método .encode falhou
