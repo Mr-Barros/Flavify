@@ -8,9 +8,14 @@ def admin_login(password: str) -> bool:
     Realiza a autenticação do administrador.
 
     Args:
-        password (str): senha digitada pelo usuário.
+        password (str): Senha digitada pelo usuário.
     Returns:
-        (bool): indica se a autenticação foi bem-sucedida.
+        (bool): Indica se a autenticação foi bem-sucedida.
+
+    ## Assertivas de entrada:
+        - O parâmetro password não deve ser uma string vazia.
+    ## Assertivas de saída:
+        - Retorna true se password é a senha correta, e false caso contrário.
     """
 
     return password == _secret_password

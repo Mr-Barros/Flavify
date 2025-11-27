@@ -11,11 +11,16 @@ def sentence_similarity(sentence1: str, sentence2: str) -> float:
     Avalia a similaridade entre duas frases utilizando NLP.
 
     Args:
-        sentence1 (str): primeira frase.
-        sentence2 (str): segunda frase.
+        sentence1 (str): Primeira frase.
+        sentence2 (str): Segunda frase.
 
     Returns:
-        (float): valor que indica o grau de similaridade entre as frases, entre 0 e 1.
+        (float): Valor que indica o grau de similaridade entre as frases.
+
+    ## Assertivas de entrada
+        - Os parâmetros sentence1 e sentence2 não podem ser strings vazias.
+    ## Assertivas de saída
+        - O grau de similaridade está entre 0 e 1.
     """
 
     model: SentenceTransformer = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")

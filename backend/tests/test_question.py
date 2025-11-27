@@ -174,7 +174,7 @@ class TestQuestion(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='INVALID JSON')
     def test_load_questions_corrupted_json(self, mock_file: Mock):
         """Carregar arquivo JSON corrompido (Deve gerar JSONDecodeError)."""
-        # Seu código NÃO tem try/except para JSONDecodeError. 
+        # O código NÃO tem try/except para JSONDecodeError. 
         # O teste correto é verificar se o erro SOBE para quem chamou.
         with self.assertRaises(json.JSONDecodeError):
             question.load_questions_from_json()

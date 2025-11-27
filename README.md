@@ -1,27 +1,29 @@
 # Flavify
 
-### Dependências
+## Dependências
 
 Rode os seguintes comandos no terminal para instalar todas as bibliotecas necessárias (Backend e Frontend).
 
 **Backend:**
 ```shell
-pip install fastapi uvicorn sentence_transformers httpx
+pip install fastapi
+pip install uvicorn
+pip install sentence_transformers
+pip install httpx
 ```
 
-Frontend:
-
+**Frontend:**
 ```shell
 cd frontend
 npm install
+npm install lucide-react
 ```
-Como rodar
+## Como rodar
 Para inicializar os servidores de frontend e backend, crie uma instância de terminal para o backend e outra para o frontend, ambas na pasta raiz do projeto.
 
 No primeiro terminal (Backend), rode os comandos a seguir:
 
 ```shell
-
 cd backend
 python app.py
 ```
@@ -34,7 +36,7 @@ cd frontend
 npm run dev
 ```
 
-Testes Automatizados
+## Testes Automatizados
 Para rodar a bateria completa de testes (49 testes cobrindo rotas, lógica, IA e validações):
 
 ```shell

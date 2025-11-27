@@ -40,7 +40,7 @@ class TestApp(unittest.TestCase):
 
     def test_admin_login_empty_body(self):
         """Login sem enviar senha (JSON vazio)."""
-        # Seu código faz: password = body.get('password', '')
+        # O código faz: password = body.get('password', '')
         # Então se mandar vazio, a senha vira "", que é incorreta. Deve dar 401.
         payload = {}
         response = client.post("/admin/login", json=payload)
@@ -64,7 +64,7 @@ class TestApp(unittest.TestCase):
 
     def test_create_question_partial(self):
         """Criação faltando dados (só enunciado)."""
-        # Seu código define padrão '' para o que falta
+        # O código define padrão '' para o que falta
         payload = {"statement": "Só pergunta"} 
         response = client.post("/questions", json=payload)
         self.assertEqual(response.status_code, 200)

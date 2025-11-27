@@ -23,11 +23,17 @@ def evaluate(question_id: str, answer: str) -> int:
     módulo natural_language.
 
     Args:
-        question_id (str): identificador da questão.
-        answer(str): resposta dada pelo usuário.
+        question_id (str): Identificador da questão.
+        answer(str): Resposta dada pelo usuário.
     Returns:
-        (int): valor que representa a pontuação obtida na questão. Pode ter os valores
-        0, 40, 70 ou 100. Caso a questão não seja encontrada, retorna um código de erro (-1).
+        (int): Valor que representa a pontuação obtida na questão.
+
+    ## Assertivas de entrada:
+        - O parâmetro question_id deve ser uma string única, correspondente a um UUID.
+        - O parâmetro answer não deve ser uma string vazia.
+    ## Assertivas de saída:
+        - A saída pode ter os valores 0, 40, 70 ou 100. 
+        - Caso a questão não seja encontrada, retorna um código de erro (-1).
     """
 
     if question_id not in questions:
@@ -51,9 +57,14 @@ def get_statement(question_id: str) -> str:
     Retorna o enunciado da questão referenciada.
 
     Args:
-        question_id (str): identificador da questão.
+        question_id (str): Identificador da questão.
     Returns:
-        (str): o enunciado da questão.
+        (str): O enunciado da questão.
+
+    ## Assertivas de entrada:
+        - O parâmetro question_id deve ser uma string única, correspondente a um UUID.
+    ## Assertivas de saída:
+        - A string de saída não estará vazia.
     """
     question = questions[question_id]
     return question['statement']
@@ -64,9 +75,14 @@ def get_correct_answer(question_id: str) -> str:
     Retorna o gabarito da questão referenciada.
 
     Args:
-        question_id (str): identificador da questão.
+        question_id (str): Identificador da questão.
     Returns:
-        (str): o gabarito da questão.
+        (str): O gabarito da questão.
+
+    ## Assertivas de entrada:
+        - O parâmetro question_id deve ser uma string única, correspondente a um UUID.
+    ## Assertivas de saída:
+        - A string de saída não estará vazia.
     """
     question = questions[question_id]
     return question['correct_answer']
@@ -77,11 +93,15 @@ def create_question(statement: str, correct_answer: str) -> int:
     Cria uma nova questão e a adiciona ao dicionário de questões.
 
     Args:
-        statement (str): enunciado da questão.
-        correct_answer (str): gabarito da questão.
+        statement (str): Enunciado da questão.
+        correct_answer (str): Gabarito da questão.
     Returns:
-        (int): Um inteiro indicando o status da operação. Retorna 1 em caso de sucesso e 0
-        em caso de falha.
+        (int): Um inteiro indicando o status da operação.
+
+    ## Assertivas de entrada:
+        - Os parâmetros statement e correct_answer não devem ser strings vazias.
+    ## Assertivas de saída:
+        - Retorna 1 em caso de sucesso e 0 em caso de falha.
     """
     
     question_id: str = str(uuid4())
@@ -100,8 +120,12 @@ def get_all_questions() -> dict[str, dict[str, str]]:
     Retorna todas as questões cadastradas no dicionário de questões.
 
     Returns:
-        (dict[str, dict[str, str]]): dicionário contendo todas as questões registradas, 
+        (dict[str, dict[str, str]]): Dicionário contendo todas as questões registradas, 
         identificadas por uma string question_id.
+
+    ## Assertivas de saída:
+        - Cada questão é um dicionário contendo os campos question_id, statement e correct_answer, todos strings.
+        - O question_id da questão será igual à chave que a identifica.
     """
     return questions.copy()
 
@@ -111,12 +135,18 @@ def update_question(question_id: str, new_statement: str, new_correct_answer: st
     Atualiza os dados de uma questão existente no dicionário de questões.
 
     Args:
-        question_id (str): identificador da questão a ser atualizada.
-        new_statement (str): novo enunciado da questão.
-        new_correct_answer (str): novo gabarito da questão.
+        question_id (str): Identificador da questão a ser atualizada.
+        new_statement (str): Novo enunciado da questão.
+        new_correct_answer (str): Novo gabarito da questão.
     Returns:
-        (int): valor indicando o status da operação. Retorna 1 em caso de sucesso e 0
+        (int): Valor indicando o status da operação. Retorna 1 em caso de sucesso e 0
         em caso de falha (por exemplo, se a questão não for encontrada).
+
+    ## Assertivas de entrada:
+        - O parâmetro question_id deve ser uma string única, correspondente a um UUID.
+        - Os parâmetros new_statement e new_correct_answer não devem ser strings vazias.
+    ## Assertivas de saída:
+        - Retorna 1 em caso de sucesso e 0 em caso de falha.
     """
 
     if question_id not in questions:
@@ -135,10 +165,15 @@ def delete_question(question_id: str) -> int:
     Remove uma questão existente do dicionário de questões.
 
     Args:
-        question_id (str): identificador da questão a ser removida.
+        question_id (str): Identificador da questão a ser removida.
     Returns:
-        (int) valor indicando o status da operação. Retorna 1 em caso de sucesso e 0
+        (int) Valor indicando o status da operação. Retorna 1 em caso de sucesso e 0
         em caso de falha (por exemplo, se a questão não for encontrada).
+
+    ## Assertivas de entrada:
+        - O parâmetro question_id deve ser uma string única, correspondente a um UUID.
+    ## Assertivas de saída:
+        - Retorna 1 em caso de sucesso e 0 em caso de falha.
     """
 
     if question_id not in questions:
@@ -154,6 +189,9 @@ def delete_question(question_id: str) -> int:
 def save_questions_to_json():
     """
     Salva o dicionário de questões no arquivo questions.json.
+
+    ## Assertivas de saída:
+        - As questões do dicionário serão salvas no arquivo questions.json.
     """
     question_list = list(questions.values())
     with open('data/questions.json', 'w', encoding='utf-8') as f:
@@ -164,6 +202,9 @@ def save_questions_to_json():
 def load_questions_from_json():
     """
     Preenche o dicionário de questões com os dados do arquivo questions.json.
+
+    ## Assertivas de saída:
+        - O dicionário questions será preenchido com os dados do arquivo questions.json (se existir).
     """
     try:
         with open('data/questions.json', 'r', encoding='utf-8') as f:

@@ -76,7 +76,7 @@ class TestSentenceSimilarity(unittest.TestCase):
         # Simulamos que ao tentar iniciar a classe, ocorre um erro de Runtime
         mock_transformer_class.side_effect = RuntimeError("Falha ao baixar modelo")
 
-        # Como seu código não tem try/except, ele DEVE repassar o erro.
+        # Como o código não tem try/except, ele DEVE repassar o erro.
         # Testamos se o erro realmente acontece.
         with self.assertRaises(RuntimeError):
             natural_language.sentence_similarity("A", "B")
