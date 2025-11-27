@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Trash2, Plus, Lock, KeyRound, Save, LogOut } from "lucide-react";
+import { Trash2, Plus, Lock, KeyRound, Save, LogOut, Pencil, X, Check } from "lucide-react";
 
 type Question = {
     question_id: string;
@@ -19,6 +19,10 @@ export default function Admin() {
     const [newStatement, setNewStatement] = useState("");
     const [newAnswer, setNewAnswer] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editStatement, setEditStatement] = useState("");
+    const [editAnswer, setEditAnswer] = useState("");
 
     // Carregar questões ao entrar (se estiver logado)
     useEffect(() => {
@@ -77,6 +81,26 @@ export default function Admin() {
             console.error("Erro ao criar", error);
         } finally {
             setIsSubmitting(false);
+        }
+    }
+
+    async function handleUpdate(id: string) {
+        if (!editStatement || !editAnswer) return;
+
+        try {
+            await fetch(`http://127.0.0.1:5000/questions/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    statement: editStatement,
+                    correct_answer: editAnswer
+                })
+            });
+
+            setEditingId(null);
+            loadQuestions();
+        } catch (error) {
+            console.error("Erro ao atualizar", error);
         }
     }
 
@@ -204,21 +228,77 @@ export default function Admin() {
                 ) : (
                     <div className="grid gap-4">
                         {questions.map(q => (
-                            <div key={q.question_id} className="bg-gray-900/40 border border-gray-800 p-5 rounded-xl flex justify-between items-start group hover:border-gray-600 hover:bg-gray-900 transition-all">
-                                <div className="space-y-2">
-                                    <p className="font-medium text-lg text-gray-200">{q.statement}</p>
-                                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                                        <span className="w-2 h-2 rounded-full bg-green-500/50"></span>
-                                        Resposta: <span className="text-gray-400">{q.correct_answer}</span>
+                            <div 
+                                key={q.question_id} 
+                                className="bg-gray-900/40 border border-gray-800 p-5 rounded-xl group hover:border-gray-600 hover:bg-gray-900 transition-all"
+                            >
+                                {editingId === q.question_id ? (
+                                    // --- FORMULÁRIO DE EDIÇÃO ---
+                                    <div className="space-y-4">
+                                        <input
+                                            className="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-white"
+                                            value={editStatement}
+                                            onChange={e => setEditStatement(e.target.value)}
+                                        />
+
+                                        <textarea
+                                            className="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-white h-24 resize-none"
+                                            value={editAnswer}
+                                            onChange={e => setEditAnswer(e.target.value)}
+                                        />
+
+                                        <div className="flex gap-3 justify-end">
+                                            <button
+                                                className="p-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700"
+                                                onClick={() => setEditingId(null)}
+                                            >
+                                                <X size={18} />
+                                            </button>
+
+                                            <button
+                                                className="p-2 bg-green-600 text-white rounded-lg hover:bg-green-500"
+                                                onClick={() => handleUpdate(q.question_id)}
+                                            >
+                                                <Check size={18} />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <button 
-                                    onClick={() => handleDelete(q.question_id)}
-                                    className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                    title="Excluir Questão"
-                                >
-                                    <Trash2 size={18} />
-                                </button>
+                                ) : (
+                                    // --- VISUALIZAÇÃO NORMAL ---
+                                    <div className="flex justify-between items-start">
+                                        <div className="space-y-2">
+                                            <p className="font-medium text-lg text-gray-200">{q.statement}</p>
+                                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                                <span className="w-2 h-2 rounded-full bg-green-500/50"></span>
+                                                Resposta: <span className="text-gray-400">{q.correct_answer}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                            {/* Botão EDITAR */}
+                                            <button
+                                                onClick={() => {
+                                                    setEditingId(q.question_id);
+                                                    setEditStatement(q.statement);
+                                                    setEditAnswer(q.correct_answer);
+                                                }}
+                                                className="p-2 text-gray-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition"
+                                                title="Editar Questão"
+                                            >
+                                                <Pencil size={18} />
+                                            </button>
+
+                                            {/* Botão DELETAR */}
+                                            <button 
+                                                onClick={() => handleDelete(q.question_id)}
+                                                className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition"
+                                                title="Excluir Questão"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
